@@ -1,0 +1,10 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+_term() {
+	echo "Caught SIGTERM signal!"
+	pkill -15 /app/drone-server
+}
+
+trap _term SIGTERM
+s6-setuidgid $RUNUSER /app/drone-server &
+wait

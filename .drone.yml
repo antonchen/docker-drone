@@ -1,0 +1,37 @@
+kind: pipeline
+name: drone
+
+steps:
+- name: build drone image
+  environment:
+    DOCKER_BUILDKIT: 1
+  image: plugins/docker
+  privileged: true
+  volumes:
+  - name: data
+    path: /drone
+  settings:
+    storage_path: /drone/docker-storage
+    mirror: http://mirror.docker.local
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+    repo: antonhub/drone
+    build_args:
+    - MIRROR_DOMAIN=mirrors.tuna.tsinghua.edu.cn
+    - DRONE_SERVER_VERSION=v2.16.0
+    tags:
+    - latest
+    - v2.16.0
+
+trigger:
+  branch:
+  - main
+  event:
+  - push
+
+volumes:
+- name: data
+  host:
+    path: /storage/drone-runner-docker

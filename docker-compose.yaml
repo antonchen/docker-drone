@@ -1,0 +1,22 @@
+version: "3.8"
+services:
+  drone:
+    image: antonhub/drone:latest
+    container_name: drone
+    restart: always
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Shanghai
+      - DRONE_GITHUB_CLIENT_ID=YOU_GITHUB_ID
+      - DRONE_GITHUB_CLIENT_SECRET=YOU_GITHUB_SECRET
+      - DRONE_RPC_SECRET=YOU_SECRET
+      - DRONE_SERVER_HOST=drone.example.com
+      - DRONE_SERVER_PROTO=https 
+      - DRONE_REGISTRATION_CLOSED=true
+      - DRONE_LOGS_DEBUG=false
+      - DRONE_USER_CREATE=username:YOU_USER,admin:true
+    volumes:
+      - /storage/data/drone:/data
+    ports:
+      - "8080:8080"
